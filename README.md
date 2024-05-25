@@ -8,7 +8,7 @@ Fudan 2024 Database PJ1 based on bserv
 - 操作系统：支持Windows操作系统。
 - 数据库：需要安装支持SQL的数据库系统PostgreSQL。
 - 编程语言：系统后端使用c++编写，需要安装Visual Studio和c++运行环境。
- -系统框架：bserv。配置方法见https://github.com/JonathanSilver/bserv
+- 系统框架：bserv。配置方法见https://github.com/JonathanSilver/bserv
 
 ### 部署步骤：
 - 配置好环境后，下载系统源代码，并解压到本地目录，将WebApp文件夹中文件替换掉同名原文件，将templates文件夹整个替换。
