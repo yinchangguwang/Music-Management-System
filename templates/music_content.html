@@ -1,0 +1,110 @@
+{% extends "base.html" %} 
+
+{% block title %}Music_content{% endblock %} 
+
+{% block users_active %}active{% endblock %} 
+
+{% block content %}
+
+{% for music in music %}
+<div class="p-5 mb-4 bg-light rounded-3">
+    <div class="container-fluid py-5">
+      <h1 class="display-5 fw-bold">{{music.Mname}}</h1>
+      {% for final_score in score %}<p class="col-md-8 fs-4">评分：{{final_score.score}}</p>{% endfor %}
+      <p class="col-md-8 fs-4" >标签:</p>
+      <div style="display: inline-block;">
+          <div style="display: inline-block;">
+            {% for tag in tags %}<p style="float:left;">{{tag.Tname}}</p> <p style="float:left; margin-left:30px;">  </p>{% endfor %}
+          </div>
+      </div>
+      
+    </div>
+    
+</div>
+
+
+
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#add_remark">
+添加评论
+</button>
+
+
+<div class="modal fade" id="add_remark" tabindex="-1" aria-labelledby="userModalLabel" aria-hidden="true">
+<div class="modal-dialog">
+    <div class="modal-content">
+    <form method="post" action="form_add_remark">
+        <div class="modal-header">
+        <h5 class="modal-title" id="userModalLabel">添加评论</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+        <div class="mb-3">
+            <label for="Rcontext" class="form-label">评论</label>
+            <input type="text" class="form-control" id="Rcontext" name="Rcontext" placeholder="Rcontext">
+        </div>
+        <div class="mb-3">
+            <label for="Rmark" class="form-label">打分（0~100的整数）</label>
+            <input type="number"  min="0" max="100" step="1" class="form-control" id="Rmark" name="Rmark" placeholder="Rmark">
+        </div>
+        </div>
+        <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+        <button type="submit" class="btn btn-primary">添加</button>
+        </div>
+    </form>
+    </div>
+</div>
+</div>
+
+{% for remark in remarks %}
+<div class="p-5 mb-4 bg-light rounded-3" id="remarkModal_delete" style="position: relative;">
+  {% if exists("superuser") %}
+
+  <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#remarkModal_{{remark.R_}}" style="position: absolute; bottom: 0; right: 0;">
+    删除
+  </button>
+  
+
+  <div class="modal fade" id="remarkModal_{{remark.R_}}" tabindex="-1" aria-labelledby="userModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <form method="post" action="/delete_remark">
+          <div class="modal-header">
+            <h5 class="modal-title" id="userModalLabel">是否删除</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+            <div class="mb-3" style="text-align: center;">
+              <div>序号为“{{remark.R_}}”的评论</div> 
+              <input type="hidden" class="form-control" id="R_" name="R_" placeholder="R_" value="{{remark.R_}}">
+            </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+            <button type="submit" class="btn btn-danger">删除</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  {% else %}
+                        
+  {% endif %}
+
+
+    <div class="container-fluid py-5">
+      <p class="col-md-8 fs-4" id="remark_{{remark.R_}}">{{remark.username}}:</p>
+      <p id="remark_{{remark.R_}}">{{remark.Rcontext}}</p>
+      <p id="remark_{{remark.R_}}">评分：{{remark.Rmark}}</p>
+    </div>
+</div>
+
+
+{% endfor %}
+
+
+
+
+{% endfor %}
+
+  
+
+{% endblock %}

@@ -1,0 +1,199 @@
+{% extends "base.html" %}
+
+{% block title %}music_management{% endblock %}
+
+{% block music_management_active %}active{% endblock %}
+
+{% block content %}
+
+<div class="p-5 mb-4 bg-light rounded-3" style="text-align:center" >
+  <h3>搜索音乐</h3>
+  <div class="form-input-wrap f-l" style="display:inline">
+      <form method="post" action="/music_management" >
+        <input type="text" class="form-control" id="Mname_search" name="Mname_search" placeholder="请输入关键字">
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-outline-secondary" >搜索</button>
+          </div>
+      </form>
+  </div>
+</div>
+
+
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#userModal">
+  添加音乐
+</button>
+
+
+<div class="modal fade" id="userModal" tabindex="-1" aria-labelledby="userModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <form method="post" action="/form_add_music">
+        <div class="modal-header">
+          <h5 class="modal-title" id="userModalLabel">添加音乐</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="mb-3">
+            <label for="Mname" class="form-label">音乐名</label>
+            <input type="text" class="form-control" id="Mname" name="Mname" placeholder="音乐名">
+          </div>
+          <div class="mb-3">
+            <label for="Aname" class="form-label">所属专辑名称</label>
+            <input type="text" class="form-control" id="Aname" name="Aname" placeholder="所属专辑名称">
+          </div>
+          <div class="mb-3">
+            <label for="Sname" class="form-label">所属歌手名称</label>
+            <input type="text" class="form-control" id="Sname" name="Sname" placeholder="所属歌手名称">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+          <button type="submit" class="btn btn-primary">添加</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">音乐序号</th>
+      <th scope="col">音乐名</th>
+      <th scope="col">所属专辑</th>
+      <th scope="col">所属歌手</th>
+      <th scope="col">管理标签</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for music in music %}
+    <tr style="vertical-align: middle;">
+      <th scope="row">{{ loop.index1 }}</th>
+      <td>{{ music.M_ }}</td>
+      <td><a href="/{{music.S_}}/{{music.A_}}/0/{{music.M_}}/music" style="text-decoration: none; color: black;">{{ music.Mname }}</a></td>
+      <td><a href="/{{music.S_}}/{{music.A_}}/0/manu" style="text-decoration: none; color: black;">{{ music.Aname }}</a></td>
+      <td><a href="/{{music.S_}}/0/0/manu" style="text-decoration: none; color: black;">{{ music.Sname }}</a></td>
+      <td>
+        <button type="button" class="btn btn-primary" onclick="window.location.href='/music_tag/{{music.M_}}'">管理标签</button>
+      </td>
+      <td>
+
+        <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#musicModal_update{{music.M_}}">
+          修改
+        </button>
+
+
+        <div class="modal fade" id="musicModal_update{{music.M_}}" tabindex="-1" aria-labelledby="userModalLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <form method="post" action="/update_music">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="userModalLabel">修改</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  <div class="mb-3">
+                    <label for="Mname" class="form-label">音乐名</label>
+                    <input type="text" class="form-control" id="Mname" name="Mname" placeholder="音乐名" value="{{music.Mname}}">
+                  </div>
+                  <div class="mb-3">
+                    <label for="Aname" class="form-label">所属专辑名称</label>
+                    <input type="text" class="form-control" id="Aname" name="Aname" placeholder="所属专辑名称" value="{{music.Aname}}">
+                  </div>
+                  <div class="mb-3">
+                    <label for="Sname" class="form-label">所属歌手名称</label>
+                    <input type="text" class="form-control" id="Sname" name="Sname" placeholder="所属歌手名称" value="{{music.Sname}}">
+                  </div>
+                  <div class="mb-3">
+                    <input type="hidden" class="form-control" id="M_" name="M_" placeholder="M_" value="{{music.M_}}">
+                  </div>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                  <button type="submit" class="btn btn-primary">修改</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </td>
+      <td>
+
+        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#musicModal_{{music.M_}}">
+          删除
+        </button>
+        
+
+        <div class="modal fade" id="musicModal_{{music.M_}}" tabindex="-1" aria-labelledby="userModalLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <form method="post" action="/delete_music">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="userModalLabel">是否删除</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                  <div class="mb-3">
+                    <div>名称为“{{music.Mname}}”的音乐</div> 
+                    <input type="hidden" class="form-control" id="M_" name="M_" placeholder="M_" value="{{music.M_}}">
+                  </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                  <button type="submit" class="btn btn-danger">删除</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+{% if exists("pagination") %}
+<ul class="pagination">
+  {% if existsIn(pagination, "previous") %}
+  <li class="page-item">
+    <a class="page-link" href="/music_management/{{ pagination.previous }}" aria-label="Previous">
+      <span aria-hidden="true">&laquo;</span>
+    </a>
+  </li>
+  {% else %}
+  <li class="page-item disabled">
+    <a class="page-link" href="#" aria-label="Previous">
+      <span aria-hidden="true">&laquo;</span>
+    </a>
+  </li>
+  {% endif %}
+  {% if existsIn(pagination, "left_ellipsis") %}
+  <li class="page-item"><a class="page-link" href="/music_management/1">1</a></li>
+  <li class="page-item disabled"><a class="page-link" href="#">...</a></li>
+  {% endif %}
+  {% for page in pagination.pages_left %}
+  <li class="page-item"><a class="page-link" href="/music_management/{{ page }}">{{ page }}</a></li>
+  {% endfor %}
+  <li class="page-item active" aria-current="page"><a class="page-link" href="/music_management/{{ pagination.current }}">{{ pagination.current }}</a></li>
+  {% for page in pagination.pages_right %}
+  <li class="page-item"><a class="page-link" href="/music_management/{{ page }}">{{ page }}</a></li>
+  {% endfor %}
+  {% if existsIn(pagination, "right_ellipsis") %}
+  <li class="page-item disabled"><a class="page-link" href="#">...</a></li>
+  <li class="page-item"><a class="page-link" href="/music_management/{{ pagination.total }}">{{ pagination.total }}</a></li>
+  {% endif %}
+  {% if existsIn(pagination, "next") %}
+  <li class="page-item">
+    <a class="page-link" href="/music_management/{{ pagination.next }}" aria-label="Next">
+      <span aria-hidden="true">&raquo;</span>
+    </a>
+  </li>
+  {% else %}
+  <li class="page-item disabled">
+    <a class="page-link" href="#" aria-label="Next">
+      <span aria-hidden="true">&raquo;</span>
+    </a>
+  </li>
+  {% endif %}
+</ul>
+{% endif %}
+{% endblock %}

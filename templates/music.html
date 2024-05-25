@@ -1,0 +1,304 @@
+{% extends "base.html" %} 
+
+{% block title %}Music{% endblock %} 
+
+{% block users_active %}active{% endblock %} 
+
+{% block content %}
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+    <style type="text/css">
+        body
+        {
+            padding: 0;
+            font-size: 10pt;
+            behavior:url(css/csshover.htc);
+        }
+        .topmenu
+        {
+            display: block;
+            width: 220px;
+            border: 2px solid #e4393c;
+            margin: 0;
+            padding: 0;
+        }
+        .toptitle
+        {
+            height: 40px;
+            line-height: 40px;
+            text-align: left;
+            font-size: 11pt;
+            font-weight: bold;
+            color: White;
+            background: #e4393c;
+            padding-left: 20px;
+        }
+        .topmenu li
+        {
+            height: 30px;
+            line-height: 30px;
+            font-size: 11pt;
+            list-style-type: none;
+            text-align: left;
+            padding-left: 8px;
+            z-index: 3;
+            background-image: url(1.png);
+            background-repeat: no-repeat;
+            background-position: right;
+        }
+        .topmenu li a
+        {
+            text-decoration: none;
+            color: #313131;
+        }
+        .topmenu li a:hover
+        {
+            text-decoration: underline;
+            font-weight: bold;
+            color: #e4393c;
+        }
+        .topmenu .lihover
+        {
+            border: 1px solid #DDD;
+            border-right: 0;
+            box-shadow: 0 0 8px #DDD;
+            -moz-box-shadow: 0 0 8px #DDD;
+            -webkit-box-shadow: 0 0 8px #DDD;
+            background-image: none;
+            height:60px;
+            border-left:4px solid #e4393c;
+            
+            
+        }
+         .topmenu .lihover .submenu
+        {
+            display: block;
+        }
+        
+        .topmenu .lihover span
+        {
+            background: white;
+            display: inline-block;
+            z-index: 20;
+            width: 20px;
+            height: 60px;
+            float: right;
+            position: relative;
+        }
+        
+      
+      .topmenu li b
+       {
+           display:none;
+           
+        }
+      
+        .topmenu .lihover b
+        {
+            display:block;
+            height:30px;
+            line-height:30px;
+            font-weight:normal;
+            font-size:10pt;
+        }
+     
+        .submenu
+        {
+          height: 110%;
+            display: none;
+            width: 715px;
+            left: 220px;
+            position: absolute;
+            top: 40px;
+            border: 1px solid #DDD;
+            z-index: 4;
+            background: white;
+            box-shadow: 0 0 8px #DDD;
+            -moz-box-shadow: 0 0 8px #DDD;
+            -webkit-box-shadow: 0 0 8px #DDD;
+        }
+        .leftdiv
+        {
+            float: left;
+            width: 490px;
+            margin: 5px;
+        }
+        .rightdiv
+        {
+            float: left;
+            width: 200px;
+            margin: 5px;
+        }
+       
+        .leftdiv dl
+        {
+            display: block;
+            border-bottom: 1px solid #EEE;
+            padding-bottom: 6px;
+            overflow: hidden;
+        }
+        .leftdiv dl dt
+        {
+            display: block;
+            float: left;
+            width: 60px;
+            text-align: right;
+            height: 22px;
+            line-height: 22px;
+            padding-right: 6px;
+        }
+        
+        .leftdiv dl dt a
+        {
+            color: #e4393c;
+            font-weight: bold;
+            text-decoration: underline;
+            font-size: 10pt;
+        }
+        .leftdiv dl dd
+        {
+            display: block;
+            overflow: hidden;
+        }
+        .leftdiv dl dd a
+        {
+            display: block;
+            float: left;
+            border-left: 1px solid #CCC;
+            color: #737373;
+            font-size: 9pt;
+            padding: 0 8px;
+            height: 14px;
+            line-height: 14px;
+            margin: 4px 0;
+        }
+        
+        .rightdiv dl dd
+        {
+            margin: 3px 0;
+        }
+        
+        .rightdiv dl dt
+        {
+            color: #e4393c;
+            font-weight: bold;
+            font-size: 10pt;
+        }
+        
+        .rightdiv dl dd a
+        {
+            font-size: 9pt;
+            color: #737373;
+            line-height: 22px;
+        }
+        .rightdiv dl dd a:hover
+        {
+            color: #737373;
+            font-weight: normal;
+        }
+      
+      .rightPic
+      {
+          position:relative;
+          right:-35px;
+          bottom:-30px;
+        
+          }
+    </style>
+</head>
+<body>
+    <script type="text/javascript">
+        window.onload = function () {
+            var Lis = document.getElementsByTagName("li");
+            for (i = 0; i < Lis.length; i++) {
+                Lis[i].i = i;
+                Lis[i].onmouseover = function () {
+                    this.className = "lihover";
+ 
+                    var h0 = (this.i - 1) * 30 + 42;
+                    var y = this.getElementsByTagName("div")[0].offsetHeight;
+                    var h = this.getElementsByTagName("div")[0].style.top + y;
+ 
+                    if (h < h0) {
+                        this.getElementsByTagName("div")[0].style.top = h0 + "px";
+                    }
+ 
+                    if (y > 550) {
+                        this.getElementsByTagName("div")[0].style.top = "3px";
+                    }
+                }
+ 
+                Lis[i].onmouseout = function () {
+                    this.className = "";
+                }
+            }
+ 
+        }
+    </script>
+
+<div class="p-5 mb-4 bg-light rounded-3" style="text-align:center" >
+    <h3>搜索音乐</h3>
+    <div class="form-input-wrap f-l" style="display:inline">
+        <form method="post" action=" manu" >
+          <input type="text" class="form-control" id="Mname_search" name="Mname_search" placeholder="请输入关键字">
+            <div class="modal-footer">
+              <button type="submit" class="btn btn-outline-secondary" >搜索</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+      <ul class="topmenu">
+          <div class="toptitle">
+              专辑分类
+          </div>
+          <li><a href=" ../../0/0/manu">全部</a><span></span>
+            <div class="submenu">
+                <div class="leftdiv" >
+                    <dl>
+                        <dt><a href=" ../../0/0/manu">全部</a></dt>
+                        <dd>
+                            {% for tag in tags %}<a href=" ../../0/{{tag.T_}}/manu">{{ tag.Tname }}</a> {% endfor %}
+                        </dd>
+                    </dl>
+                </div>
+                
+            </div>
+          </li>
+          {% for album in albums %}
+          <li><a href=" ../../{{album.A_}}/0/manu">{{ album.Aname }}</a><span></span>
+              <div class="submenu">
+                  <div class="leftdiv" >
+                      <dl>
+                          <dt><a href=" ../../{{album.A_}}/0/manu">全部</a></dt>
+                          <dd>
+                            {% for tag in tags %}<a href=" ../../{{album.A_}}/{{tag.T_}}/manu">{{ tag.Tname }}</a> {% endfor %}
+                          </dd>
+                      </dl>
+                  </div>
+                  
+              </div>
+          </li>
+
+          {% endfor %}
+          
+      </ul>
+    
+
+
+</body>
+</html>
+<div style="text-align: center; width: 1000px; margin: 0 auto;">
+    {% for music in music %}
+      <div style="text-align: left; display: inline-block; width: 1000px; margin: 10px;">
+        <a href="{{ music.M_ }}/music" style="text-decoration: none; color: black;">
+          <div style="text-align: left; display: inline-block; width: 1000px; font-size: 20px;">{{ music.Mname }}</div>
+        </a>
+      </div>
+        <br>
+    {% endfor %}
+  </div>
+{% endblock %}

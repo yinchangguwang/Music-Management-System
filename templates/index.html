@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block title %}Home{% endblock %}
+
+{% block home_active %}active{% endblock %}
+
+{% block content %}
+
+{% for singer in singers %}
+<div class="p-5 mb-4 bg-light rounded-3">
+  <a href="/{{singer.S_}}/0/0/manu">
+    <div style="text-align: center;">
+      <img src='/statics/images/{{singer.Spicture}}.jpg' width="300" height="300" />
+    </div>
+  </a>
+    <h2 style="text-align: center;">{{ singer.Sname }}</h>
+</div>
+{% endfor %}
+{% endblock %}

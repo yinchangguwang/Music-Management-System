@@ -1,0 +1,139 @@
+{% extends "base.html" %}
+
+{% block title %}music_tag{% endblock %}
+
+{% block music_tag_active %}active{% endblock %}
+
+{% block content %}
+
+
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#userModal">
+  为音乐添加标签
+</button>
+
+
+<div class="modal fade" id="userModal" tabindex="-1" aria-labelledby="userModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <form method="post" action="/form_add_music_tag">
+        <div class="modal-header">
+          <h5 class="modal-title" id="userModalLabel">添加标签</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="mb-3">
+            <label for="Tname" class="form-label">标签名</label>
+            <input type="text" class="form-control" id="Tname" name="Tname" placeholder="标签名">
+          </div>
+          <div class="mb-3">
+            {%for m in music %}
+              <input type="hidden" class="form-control" id="M_" name="M_" placeholder="M_" value="{{m.M_}}">
+            {%endfor%}
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+          <button type="submit" class="btn btn-primary">添加</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">标签序号</th>
+      <th scope="col">标签名</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for tag in tags %}
+    <tr style="vertical-align: middle;">
+      <th scope="row">{{ loop.index1 }}</th>
+      <td>{{ tag.T_ }}</td>
+      <td>{{ tag.Tname }}</td>
+      <td>
+
+        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#tagModal_{{tag.T_}}">
+          删除
+        </button>
+        
+
+        <div class="modal fade" id="tagModal_{{tag.T_}}" tabindex="-1" aria-labelledby="userModalLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <form method="post" action="/delete_music_tag">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="userModalLabel">是否删除</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+                  <div class="mb-3" style="text-align: center;">
+                    <div>从本音乐中删去名称为“{{tag.Tname}}”的标签</div> 
+                    <input type="hidden" class="form-control" id="T_" name="T_" placeholder="T_" value="{{tag.T_}}">
+                  </div>
+                  <div class="mb-3">
+                    {%for m in music %} <input type="hidden" class="form-control" id="M_" name="M_" placeholder="M_" value="{{m.M_}}">{%endfor%}
+                  </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                  <button type="submit" class="btn btn-danger">删除</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+{% if exists("pagination") %}
+<ul class="pagination">
+  {% if existsIn(pagination, "previous") %}
+  <li class="page-item">
+    <a class="page-link" href="{{ pagination.previous }}" aria-label="Previous">
+      <span aria-hidden="true">&laquo;</span>
+    </a>
+  </li>
+  {% else %}
+  <li class="page-item disabled">
+    <a class="page-link" href="#" aria-label="Previous">
+      <span aria-hidden="true">&laquo;</span>
+    </a>
+  </li>
+  {% endif %}
+  {% if existsIn(pagination, "left_ellipsis") %}
+  <li class="page-item"><a class="page-link" href="1">1</a></li>
+  <li class="page-item disabled"><a class="page-link" href="#">...</a></li>
+  {% endif %}
+  {% for page in pagination.pages_left %}
+  <li class="page-item"><a class="page-link" href="{{ page }}">{{ page }}</a></li>
+  {% endfor %}
+  <li class="page-item active" aria-current="page"><a class="page-link" href="{{ pagination.current }}">{{ pagination.current }}</a></li>
+  {% for page in pagination.pages_right %}
+  <li class="page-item"><a class="page-link" href="{{ page }}">{{ page }}</a></li>
+  {% endfor %}
+  {% if existsIn(pagination, "right_ellipsis") %}
+  <li class="page-item disabled"><a class="page-link" href="#">...</a></li>
+  <li class="page-item"><a class="page-link" href="{{ pagination.total }}">{{ pagination.total }}</a></li>
+  {% endif %}
+  {% if existsIn(pagination, "next") %}
+  <li class="page-item">
+    <a class="page-link" href="{{ pagination.next }}" aria-label="Next">
+      <span aria-hidden="true">&raquo;</span>
+    </a>
+  </li>
+  {% else %}
+  <li class="page-item disabled">
+    <a class="page-link" href="#" aria-label="Next">
+      <span aria-hidden="true">&raquo;</span>
+    </a>
+  </li>
+  {% endif %}
+</ul>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,181 @@
+{% extends "base.html" %}
+
+{% block title %}singer_management{% endblock %}
+
+{% block singer_management_active %}active{% endblock %}
+
+{% block content %}
+
+
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#userModal">
+  添加歌手
+</button>
+
+
+<div class="modal fade" id="userModal" tabindex="-1" aria-labelledby="userModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <form method="post" action="/form_add_singer">
+        <div class="modal-header">
+          <h5 class="modal-title" id="userModalLabel">添加歌手</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="mb-3">
+            <label for="S_" class="form-label">歌手序号</label>
+            <input type="text" class="form-control" id="Sname" name="S_" placeholder="歌手序号">
+          </div>
+          <div class="mb-3">
+            <label for="Sname" class="form-label">歌手名称</label>
+            <input type="text" class="form-control" id="Sname" name="Sname" placeholder="歌手名称">
+          </div>
+          <div class="mb-3">
+            <label for="Spicture" class="form-label">图片路径</label>
+            <input type="text" class="form-control" id="Spicture" name="Spicture" placeholder="图片路径">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+          <button type="submit" class="btn btn-primary">添加</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">歌手序号</th>
+      <th scope="col">歌手名称</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for singer in singers %}
+    <tr style="vertical-align: middle;">
+      <th scope="row">{{ loop.index1 }}</th>
+      <td>{{ singer.S_ }}</td>
+      <td><a href="/{{singer.S_}}/0/0/manu" style="text-decoration: none; color: black;">{{ singer.Sname }}</a></td>
+      <td>
+
+        <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#singerModal_update_{{singer.S_}}">
+          修改
+        </button>
+
+
+        <div class="modal fade" id="singerModal_update_{{singer.S_}}" tabindex="-1" aria-labelledby="userModalLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <form method="post" action="/update_singer">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="userModalLabel">修改</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  <div class="mb-3">
+                    <label for="S_" class="form-label">歌手序号</label>
+                    <input type="text" class="form-control" id="Sname" name="S_" placeholder="歌手序号" value="{{singer.S_}}">
+                  </div>
+                  <div class="mb-3">
+                    <label for="Sname" class="form-label">歌手名称</label>
+                    <input type="text" class="form-control" id="Sname" name="Sname" placeholder="歌手名称" value="{{singer.Sname}}">
+                  </div>
+                  <div class="mb-3">
+                    <label for="Spicture" class="form-label">图片路径</label>
+                    <input type="text" class="form-control" id="Spicture" name="Spicture" placeholder="图片路径" value="{{singer.Spicture}}">
+                  </div>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                  <button type="submit" class="btn btn-primary">修改</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </td>
+      <td>
+
+        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#singerModal_{{singer.S_}}">
+          删除
+        </button>
+        
+
+        <div class="modal fade" id="singerModal_{{singer.S_}}" tabindex="-1" aria-labelledby="userModalLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <form method="post" action="/delete_singer">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="userModalLabel">是否删除</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+                  <div class="mb-3" style="text-align: center;">
+                    <div>名称为“{{singer.Sname}}”的歌手</div> 
+                    <input type="hidden" class="form-control" id="S_" name="S_" placeholder="S_" value="{{singer.S_}}">
+                  </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                  <button type="submit" class="btn btn-danger">删除</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </td>
+
+      
+
+
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+{% if exists("pagination") %}
+<ul class="pagination">
+  {% if existsIn(pagination, "previous") %}
+  <li class="page-item">
+    <a class="page-link" href="/singer_management/{{ pagination.previous }}" aria-label="Previous">
+      <span aria-hidden="true">&laquo;</span>
+    </a>
+  </li>
+  {% else %}
+  <li class="page-item disabled">
+    <a class="page-link" href="#" aria-label="Previous">
+      <span aria-hidden="true">&laquo;</span>
+    </a>
+  </li>
+  {% endif %}
+  {% if existsIn(pagination, "left_ellipsis") %}
+  <li class="page-item"><a class="page-link" href="/singer_management/1">1</a></li>
+  <li class="page-item disabled"><a class="page-link" href="#">...</a></li>
+  {% endif %}
+  {% for page in pagination.pages_left %}
+  <li class="page-item"><a class="page-link" href="/singer_management/{{ page }}">{{ page }}</a></li>
+  {% endfor %}
+  <li class="page-item active" aria-current="page"><a class="page-link" href="/singer_management/{{ pagination.current }}">{{ pagination.current }}</a></li>
+  {% for page in pagination.pages_right %}
+  <li class="page-item"><a class="page-link" href="/singer_management/{{ page }}">{{ page }}</a></li>
+  {% endfor %}
+  {% if existsIn(pagination, "right_ellipsis") %}
+  <li class="page-item disabled"><a class="page-link" href="#">...</a></li>
+  <li class="page-item"><a class="page-link" href="/singer_management/{{ pagination.total }}">{{ pagination.total }}</a></li>
+  {% endif %}
+  {% if existsIn(pagination, "next") %}
+  <li class="page-item">
+    <a class="page-link" href="/singer_management/{{ pagination.next }}" aria-label="Next">
+      <span aria-hidden="true">&raquo;</span>
+    </a>
+  </li>
+  {% else %}
+  <li class="page-item disabled">
+    <a class="page-link" href="#" aria-label="Next">
+      <span aria-hidden="true">&raquo;</span>
+    </a>
+  </li>
+  {% endif %}
+</ul>
+{% endif %}
+{% endblock %}
